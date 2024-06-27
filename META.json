@@ -1,0 +1,64 @@
+{
+    "abstract": "A module for Perl one-liners",
+    "author": [
+        "Sunadarake <sunadarake9@gmail.com>"
+    ],
+    "dynamic_config": 0,
+    "license": [
+        "perl_5"
+    ],
+    "name": "X",
+    "no_index": {
+        "directory": [
+            "t",
+            "xt",
+            "inc",
+            "share",
+            "eg",
+            "examples",
+            "author",
+            "builder"
+        ]
+    },
+    "prereqs": {
+        "build": {
+            "requires": {
+                "Test::More": "0.98"
+            }
+        },
+        "configure": {
+            "requires": {
+                "Module::Build::Tiny": "0.035"
+            }
+        },
+        "develop": {
+            "requires": {
+                "Test::CPAN::Meta": "0",
+                "Test::MinimumVersion::Fast": "0.04",
+                "Test::PAUSE::Permissions": "0.04",
+                "Test::Pod": "1.41",
+                "Test::Spellunker": "v0.2.7"
+            }
+        },
+        "runtime": {
+            "requires": {
+                "Module::Load": "0",
+                "perl": "5.016"
+            }
+        }
+    },
+    "release_status": "unstable",
+    "resources": {
+        "bugtracker": {
+            "web": "https://github.com/sunadarake/perl-X-module"
+        },
+        "homepage": "https://github.com/sunadarake/perl-X-module",
+        "repository": {
+            "type": "git",
+            "url": "git://github.com/sunadarake/perl-X-module",
+            "web": "https://github.com/sunadarake/perl-X-module"
+        }
+    },
+    "version": "v0.0.1",
+    "x_static_install": 1
+}
