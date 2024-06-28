@@ -77,7 +77,6 @@ my %x_std_modules = (
     # List::Util
     'all'        => 'List::Util',
     'any'        => 'List::Util',
-    'bootstrap'  => 'List::Util',
     'first'      => 'List::Util',
     'head'       => 'List::Util',
     'max'        => 'List::Util',
@@ -149,11 +148,29 @@ my %x_std_modules = (
     'decode_json' => 'JSON::PP',
 
     # HTTP::Tiny
-    'http'      => sub { use HTTP::Tiny; HTTP::Tiny->new(@_); },
-    'http_tiny' => sub { use HTTP::Tiny; HTTP::Tiny->new(@_); },
+    'http'           => sub { use HTTP::Tiny; HTTP::Tiny->new(@_); },
+    'http_tiny'      => sub { use HTTP::Tiny; HTTP::Tiny->new(@_); },
+    'http_get'       => sub { _http_tiny_request( 'GET',    @_ ) },
+    'http_post'      => sub { _http_tiny_request( 'POST',   @_ ) },
+    'http_put'       => sub { _http_tiny_request( 'PUT',    @_ ) },
+    'http_delete'    => sub { _http_tiny_request( 'DELETE', @_ ) },
+    'http_patch'     => sub { _http_tiny_request( 'PATCH',  @_ ) },
+    'http_head'      => sub { _http_tiny_request( 'HEAD',   @_ ) },
+    'http_post_form' => sub { _http_tiny_post_form(@_) },
+    'http_mirror'    => sub { _http_tiny_mirror(@_) },
 
     # Time::Piece
-    'time_piece' => sub { use Time::Piece; localtime; }
+    'time_piece' => sub { use Time::Piece; localtime; },
+
+    # file read write
+    'fread'          => sub { _file_util_fread(@_) },
+    'fwrite'         => sub { _file_util_fwrite(@_) },
+    'find_files'     => sub { _find_files_abs(@_) },
+    'ffind'          => sub { _find_files_abs(@_) },
+    'find_files_abs' => sub { _find_files_abs(@_) },
+    'ffind_abs'      => sub { _find_files_abs(@_) },
+    'find_files_rel' => sub { _find_files_rel(@_) },
+    'ffind_rel'      => sub { _find_files_rel(@_) },
 
 );
 
@@ -199,6 +216,107 @@ sub _is_module_loaded {
     $module =~ s|::|/|g;
     $module .= '.pm';
     return exists $INC{$module};
+}
+
+sub _http_tiny_request {
+    my ( $meth, $url, $options ) = @_;
+
+    $options ||= +{};
+
+    use HTTP::Tiny;
+    my $res = HTTP::Tiny->new->$meth( $url, $options );
+
+    if ( $res->{success} ) {
+        return $res->{content};
+    }
+    else {
+        Carp::croak "Failed http request: $res->{status} $res->{reason}\n";
+    }
+
+}
+
+sub _http_tiny_post_form {
+    my ( $url, $form_data, $options ) = @_;
+
+    $options ||= +{};
+
+    use HTTP::Tiny;
+    my $res = HTTP::Tiny->new->post_form( $url, $form_data, $options );
+
+    unless ( $res->{success} ) {
+        Carp::croak "Failed http mirror: $res->{status} $res->{reason}\n";
+    }
+}
+
+sub _http_tiny_mirror {
+    my ( $url, $file, $options ) = @_;
+
+    $options ||= +{};
+
+    use HTTP::Tiny;
+    my $res = HTTP::Tiny->new->mirror( $url, $file, $options );
+
+    unless ( $res->{success} ) {
+        Carp::croak "Failed http mirror: $res->{status} $res->{reason}\n";
+    }
+}
+
+sub _file_util_fread {
+    my ( $file, $encoding ) = @_;
+    $encoding //= 'utf8';
+
+    open my $fh, qq{<:encoding('$encoding')}, $file
+      or Carp::croak qq{Could not open file '$file': $!};
+    local $/;
+    my $content = <$fh>;
+    close $fh;
+    return $content;
+}
+
+sub _file_util_fwrite {
+    my ( $file, $content, $encoding ) = @_;
+    $encoding //= 'utf8';
+
+    open my $fh, qq{>:encoding('$encoding')}, $file
+      or Carp::croak qq{Could not open file '$file': $!};
+
+    print $fh $content or Carp::croak qq{Could not write to file '$file': $!};
+
+    close $fh;
+}
+
+sub _find_files_abs {
+    my ($dir) = @_;
+    my @files;
+
+    use File::Find;
+
+    find(
+        sub {
+            return if -d;
+            push @files, $File::Find::name;
+        },
+        $dir
+    );
+
+    return @files;
+}
+
+sub _find_files_rel {
+    my ($dir) = @_;
+    my @files;
+
+    use File::Find;
+
+    find(
+        sub {
+            return if -d;
+            push @files, $_;
+        },
+        $dir
+    );
+
+    return @files;
 }
 
 1;
