@@ -265,7 +265,7 @@ sub _file_util_fread {
     my ( $file, $encoding ) = @_;
     $encoding //= 'utf8';
 
-    open my $fh, qq{<:encoding('$encoding')}, $file
+    open my $fh, qq{<:encoding($encoding)}, $file
       or Carp::croak qq{Could not open file '$file': $!};
     local $/;
     my $content = <$fh>;
@@ -277,7 +277,7 @@ sub _file_util_fwrite {
     my ( $file, $content, $encoding ) = @_;
     $encoding //= 'utf8';
 
-    open my $fh, qq{>:encoding('$encoding')}, $file
+    open my $fh, qq{>:encoding($encoding)}, $file
       or Carp::croak qq{Could not open file '$file': $!};
 
     print $fh $content or Carp::croak qq{Could not write to file '$file': $!};
