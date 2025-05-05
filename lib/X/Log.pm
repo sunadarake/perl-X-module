@@ -1,7 +1,8 @@
 
+use v5.40;
+
 package X::Log;
 
-use v5.40;
 use utf8::all;
 
 use Log::Log4perl;

@@ -1,7 +1,8 @@
 
+use v5.40;
+
 package X::File;
 
-use v5.40;
 use utf8::all;
 use File::Find qw(find);
 use File::Spec;
@@ -173,3 +174,118 @@ sub ff_is_dir_exists($dir_path) {
 }
 
 1;
+
+=encoding utf8
+
+=head1 名称
+
+X::File - ファイル操作を簡略化するユーティリティ関数群
+
+=head1 概略
+
+    use X::File;
+    
+    # ファイルに内容を書き込む
+    ff_file_put_contents('path/to/file.txt', 'ファイルの内容');
+    
+    # ファイルから内容を読み込む
+    my $content = ff_file_get_contents('path/to/file.txt');
+    
+    # ディレクトリ内のファイルを検索
+    my $files = ff_find_file_abs('path/to/dir', 'txt');
+
+=head1 説明
+
+このモジュールは、ファイル操作に関する一般的なタスクを簡略化するための関数コレクションを提供する。
+ファイルの読み書き、パス操作、ディレクトリ作成、ファイル検索などの機能が含まれる。
+
+=head1 関数
+
+=head2 ff_file_put_contents
+
+ファイルに内容を書き込む。必要に応じて親ディレクトリも作成する。
+
+- パラメータ1: $file_path (Str) - 書き込み先のファイルパス
+- パラメータ2: $content (Str) - ファイルに書き込む内容
+- 戻り値: (Bool) - 成功した場合は1
+
+=head2 ff_file_get_contents
+
+ファイルの内容を読み込む。
+
+- パラメータ: $file_path (Str) - 読み込むファイルのパス
+- 戻り値: (Str) - ファイルの内容
+
+=head2 ff_find_file_abs
+
+指定ディレクトリ内のファイルを絶対パスで再帰的に検索する。
+
+- パラメータ1: $root_dir (Str) - 検索を開始するルートディレクトリ
+- パラメータ2: $ext (Str, optional) - 検索する拡張子（省略可）
+- 戻り値: (ArrayRef[Str]) - 見つかったファイルの絶対パスの配列リファレンス
+
+=head2 ff_find_file_rel
+
+指定ディレクトリ内のファイルを相対パスで再帰的に検索する。
+
+- パラメータ1: $root_dir (Str) - 検索を開始するルートディレクトリ
+- パラメータ2: $ext (Str, optional) - 検索する拡張子（省略可）
+- 戻り値: (ArrayRef[Str]) - 見つかったファイルの相対パスの配列リファレンス
+
+=head2 ff_join_path
+
+複数のパス要素を結合して一つのパスを作成する。
+
+- パラメータ: @parts (Array[Str]) - 結合するパス要素（可変長引数）
+- 戻り値: (Str) - 結合された絶対パス
+
+=head2 ff_make_dir
+
+ディレクトリを作成する。必要に応じて親ディレクトリも作成する。
+
+- パラメータ: $src_dir (Str) - 作成するディレクトリパス
+- 戻り値: (Int|Undef) - 成功した場合は作成したディレクトリの数、既に存在する場合はundef
+
+=head2 ff_dirname
+
+ファイルパスからディレクトリ名部分を取得する。
+
+- パラメータ: $file_path (Str) - ファイルパス
+- 戻り値: (Str) - ディレクトリ名
+
+=head2 ff_basename
+
+ファイルパスからファイル名部分を取得する。
+
+- パラメータ: $file_path (Str) - ファイルパス
+- 戻り値: (Str) - ファイル名
+
+=head2 ff_basename_without_ext
+
+ファイルパスから拡張子を除いたファイル名を取得する。
+
+- パラメータ: $file_path (Str) - ファイルパス
+- 戻り値: (Str) - 拡張子を除いたファイル名
+
+=head2 ff_get_extention
+
+ファイルパスから拡張子を取得する。
+
+- パラメータ: $file_path (Str) - ファイルパス
+- 戻り値: (Str) - 拡張子（ドット含む）
+
+=head2 ff_file_to_abs
+
+相対パスを絶対パスに変換する。
+
+- パラメータ: $file_path (Str) - 変換するファイルパス
+- 戻り値: (Str) - 正規化された絶対パス
+
+=head2 ff_is_dir_exists
+
+指定されたディレクトリが存在するかを確認する。
+
+- パラメータ: $dir_path (Str) - 確認するディレクトリパス
+- 戻り値: (Bool) - ディレクトリが存在する場合は1、存在しない場合は0
+
+=cut

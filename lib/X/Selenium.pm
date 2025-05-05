@@ -1,7 +1,8 @@
 
+use v5.40;
+
 package X::Selenium {
 
-    use v5.40;
     use utf8::all;
     use Moo;
     use Selenium::Remote::Driver;
@@ -156,262 +157,130 @@ package X::Selenium {
 
 =pod
 
-=encoding UTF-8
+=encoding utf8
 
-=head1 名前
+=head1 名称
 
-X::Selenium - Selenium WebDriverを使用したウェブブラウザ操作の簡易ラッパー
+X::Selenium - Selenium WebDriverを使った自動ブラウザ操作のためのPerlモジュール
 
-=head1 概要
+=head1 概説
 
-    use X::Selenium;
-    
-    # ヘッドレスモードでドライバーを初期化
-    my $selenium = X::Selenium->create_driver(1, [1800, 1300]);
-    
-    # URLに移動
-    $selenium->goto_page('https://example.com');
-    
-    # 要素を見つける
-    my $element = $selenium->find_element('.some-class');
-    
-    # テキストを取得
-    my $text = $selenium->get_text($element);
-    
-    # 新しいタブを作成
-    my $new_tab = $selenium->create_new_tab();
-    
-    # タブを切り替え
-    $selenium->switch_to_tab($new_tab);
-
-=head1 説明
-
-C<X::Selenium>はSelenium WebDriverのPerlインターフェースを簡易化するためのラッパークラスです。
-このモジュールはSelenium::Remote::DriverとSelenium::Chromeを使用して、Webブラウザの自動操作を行います。
-主な特徴として、ランダムなUser-Agentの設定、ヘッドレスモードのサポート、新しいタブの作成と管理などがあります。
+このモジュールはSelenium WebDriverを使用してブラウザの自動操作を行うための機能を提供する。ランダムなUser-Agentの選択やヘッドレスモードの設定、ページ移動や要素の操作など、Webスクレイピングや自動テストに必要な基本機能を実装している。
 
 =head1 メソッド
 
-=head2 クラスメソッド
+=head2 _get_random_user_agent
 
-=head3 create_driver
+内部関数として、ランダムなユーザーエージェント文字列を返却する。
 
-    my $selenium = X::Selenium->create_driver($is_headless, $window_size);
+- 入力: なし
+- 戻り値: String - ランダムに選択されたユーザーエージェント文字列
 
-Seleniumドライバーを初期化し、X::Seleniumオブジェクトを作成して返します。
+=head2 create_driver
 
-パラメータ:
+Seleniumドライバーを初期化し、X::Seleniumオブジェクトを生成する。
 
-- C<$is_headless> - ヘッドレスモードを有効にするかどうかを指定するブール値 (デフォルト: 1)
-- C<$window_size> - ウィンドウサイズを指定する配列リファレンス [幅, 高さ] (デフォルト: [1800, 1300])
+- 入力:
+  - $class: String - クラス名
+  - $is_headless: Boolean - ヘッドレスモードで実行するかどうか（デフォルト：1）
+  - $window_size: ArrayRef - ウィンドウサイズ [幅, 高さ]（デフォルト：[1800, 1300]）
+- 戻り値: X::Selenium - 初期化されたSeleniumオブジェクト
 
-戻り値:
+=head2 goto_page
 
-- X::Seleniumオブジェクト
+指定されたURLにブラウザを移動させる。
 
-=head3 _get_random_user_agent
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $url: String - 移動先のURL
+- 戻り値: なし
 
-    my $user_agent = X::Selenium->_get_random_user_agent();
+=head2 get_current_source
 
-定義済みのUser-Agentリストからランダムに1つを選択して返します。
-内部使用のためのメソッドです。
+現在表示されているページのソースコードを取得する。
 
-戻り値:
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+- 戻り値: String - 現在のページのHTML
 
-- ランダムに選択されたUser-Agent文字列
+=head2 find_element
 
-=head2 インスタンスメソッド
+CSSセレクタを使用して単一の要素を検索する。
 
-=head3 goto_page
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $css_selector: String - CSSセレクタ
+- 戻り値: Selenium::Remote::WebElement - 見つかった要素
 
-    $selenium->goto_page($url);
+=head2 find_elements
 
-指定したURLにブラウザを移動させます。
+CSSセレクタを使用して複数の要素を検索する。
 
-パラメータ:
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $css_selector: String - CSSセレクタ
+- 戻り値: ArrayRef[Selenium::Remote::WebElement] - 見つかった要素の配列
 
-- C<$url> - アクセスするURL
+=head2 get_attribute
 
-戻り値:
+要素の指定された属性値を取得する。
 
-- なし
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $element: Selenium::Remote::WebElement - 対象の要素
+  - $attribute: String - 取得する属性名
+- 戻り値: String - 属性値
 
-=head3 get_current_source
+=head2 get_text
 
-    my $source = $selenium->get_current_source();
+要素のテキスト内容を取得する。
 
-現在のページのHTMLソースを取得して返します。
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $element: Selenium::Remote::WebElement - 対象の要素
+- 戻り値: String - 要素のテキスト内容
 
-戻り値:
+=head2 get_current_tab
 
-- ページのHTMLソース（文字列）
+現在アクティブなタブのハンドルを取得する。
 
-=head3 find_element
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+- 戻り値: String - 現在のタブハンドル
 
-    my $element = $selenium->find_element($css_selector);
+=head2 switch_to_tab
 
-CSSセレクタを使用して単一の要素を見つけて返します。
+指定されたタブハンドルに切り替える。
 
-パラメータ:
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $tab_handle: String - 切り替え先のタブハンドル
+- 戻り値: なし
 
-- C<$css_selector> - 要素を特定するためのCSSセレクタ
+=head2 create_new_tab
 
-戻り値:
+新しいタブを作成し、そのタブに切り替える。
 
-- Selenium::Remote::WebElement オブジェクト（要素が見つかった場合）
-- 要素が見つからない場合は例外が発生
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+- 戻り値: String - 新しく作成されたタブのハンドルID
 
-=head3 find_elements
+=head2 DEMOLISH
 
-    my $elements = $selenium->find_elements($css_selector);
+オブジェクトが破棄される際に自動的に呼び出され、Seleniumドライバーを終了する。
 
-CSSセレクタを使用して複数の要素を見つけて返します。
-
-パラメータ:
-
-- C<$css_selector> - 要素を特定するためのCSSセレクタ
-
-戻り値:
-
-- Selenium::Remote::WebElement オブジェクトの配列リファレンス
-- 要素が見つからない場合は空の配列リファレンス
-
-=head3 get_attribute
-
-    my $value = $selenium->get_attribute($element, $attribute);
-
-指定した要素の特定の属性値を取得します。
-
-パラメータ:
-
-- C<$element> - 属性を取得する要素オブジェクト
-- C<$attribute> - 取得する属性の名前
-
-戻り値:
-
-- 属性の値（文字列）
-- 属性が存在しない場合はundefined
-
-=head3 get_text
-
-    my $text = $selenium->get_text($element);
-
-指定した要素のテキスト内容を取得します。
-
-パラメータ:
-
-- C<$element> - テキストを取得する要素オブジェクト
-
-戻り値:
-
-- 要素のテキスト内容（文字列）
-
-=head3 get_current_tab
-
-    my $tab_handle = $selenium->get_current_tab();
-
-現在アクティブなタブのハンドル（識別子）を取得します。
-
-戻り値:
-
-- 現在のタブのハンドル（文字列）
-
-=head3 switch_to_tab
-
-    $selenium->switch_to_tab($tab_handle);
-
-指定したハンドルのタブに切り替えます。
-
-パラメータ:
-
-- C<$tab_handle> - 切り替え先のタブハンドル
-
-戻り値:
-
-- なし
-
-=head3 create_new_tab
-
-    my $new_tab_handle = $selenium->create_new_tab();
-
-新しいタブを作成し、そのタブに自動的に切り替えます。
-
-戻り値:
-
-- 新しいタブのハンドル（文字列）
+- 入力:
+  - $self: X::Selenium - オブジェクト自身
+  - $in_global_destruction: Boolean - グローバル破壊中かどうか
+- 戻り値: なし
 
 =head1 属性
 
 =head2 driver
 
-Selenium::Remote::Driverのインスタンスを保持します。
-通常は直接アクセスせず、提供されているメソッドを使用してください。
+Selenium::Remote::Driverオブジェクトを保持する。
 
-=head1 デストラクタ
-
-=head2 DEMOLISH
-
-オブジェクトが破棄される際に自動的に呼び出され、Seleniumドライバーを適切に終了します。
-
-戻り値:
-
-- なし
-
-=head1 依存モジュール
-
-- Moo
-- Selenium::Remote::Driver
-- Selenium::Chrome
-- JSON
-- X::Sleep
-- List::Util
-
-=head1 使用例
-
-    use X::Selenium;
-    
-    # 通常モード（ヘッドレスではない）でドライバーを初期化
-    my $selenium = X::Selenium->create_driver(0, [1920, 1080]);
-    
-    # Googleに移動
-    $selenium->goto_page('https://www.google.com');
-    
-    # 検索ボックスを見つける
-    my $search_box = $selenium->find_element('input[name="q"]');
-    
-    # 検索キーワードを入力し検索実行
-    $search_box->send_keys('Perlプログラミング');
-    $search_box->submit();
-    
-    # 検索結果を取得
-    my $results = $selenium->find_elements('.g');
-    
-    # 結果を表示
-    foreach my $result (@$results) {
-        my $title = $selenium->find_element('h3', $result);
-        say $selenium->get_text($title) if $title;
-    }
-    
-    # 新しいタブを開く
-    my $new_tab = $selenium->create_new_tab();
-    
-    # 新しいタブでウェブサイトを開く
-    $selenium->goto_page('https://www.cpan.org');
-    
-    # スクリプト終了時に自動的にブラウザが閉じられます
-
-=head1 注意事項
-
-- このモジュールを使用するには、ChromeブラウザとChromeDriverがインストールされている必要があります。
-- ヘッドレスモードはCI/CD環境やバックグラウンド処理に適しています。
-- User-Agentはランダムに選択されるため、実行ごとに異なる可能性があります。
-
-=head1 著者
-
-あなたの名前 <your.email@example.com>
-
-=head1 ライセンス
-
-このモジュールは自由に使用・改変・再配布が可能です。
+- 型: Selenium::Remote::Driver
+- 初期化: 遅延評価 (lazy)
 
 =cut

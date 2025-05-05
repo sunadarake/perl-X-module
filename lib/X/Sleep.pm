@@ -1,12 +1,13 @@
 
+use v5.40;
+
 package X::Sleep {
-    use v5.40;
     use utf8::all;
 
-    use Exporter qw(import);
-    our @EXPORT = qw(ss_sleep ss_sleep_random);
-
     use Time::HiRes qw(sleep);
+    use Exporter    qw(import);
+
+    our @EXPORT = qw(ss_sleep ss_sleep_random);
 
     # 指定された秒数だけスリープする関数
     # @param $sec - スリープする秒数
