@@ -1,7 +1,8 @@
-use v5.40;
-use utf8::all;
 
 package X::Sleep {
+    use v5.40;
+    use utf8::all;
+
     use Exporter qw(import);
     our @EXPORT = qw(ss_sleep ss_sleep_random);
 

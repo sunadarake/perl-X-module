@@ -3,12 +3,13 @@ package X;
 use v5.40;
 use utf8::all;
 
-use version 0.77; our $VERSION = version->declare("v0.0.1");
+use version 0.77; our $VERSION = version->declare("v0.1.0");
 
 use X::File;
 use X::Selenium;
 use X::Sleep;
 use X::Log;
+use X::HTML;
 use X::DB;
 use Exporter 'import';
 
@@ -35,6 +36,15 @@ our @EXPORT = qw(
   log_error
   log_debug
   log_success
+
+  hp_create_document
+  hp_find_element
+  hp_find_elements
+  hp_get_text
+  hp_get_attr
+  hp_get_outer_html
+  hp_get_inner_html
+  hp_remove_doc
 );
 
 1;

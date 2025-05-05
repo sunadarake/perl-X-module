@@ -1,8 +1,8 @@
-use v5.40;
-use utf8::all;
 
 package X::File;
 
+use v5.40;
+use utf8::all;
 use File::Find qw(find);
 use File::Spec;
 use File::Basename qw(dirname basename fileparse);

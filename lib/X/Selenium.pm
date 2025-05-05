@@ -1,8 +1,8 @@
-use v5.40;
-use utf8::all;
 
 package X::Selenium {
 
+    use v5.40;
+    use utf8::all;
     use Moo;
     use Selenium::Remote::Driver;
     use Selenium::Chrome;

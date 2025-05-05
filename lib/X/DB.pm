@@ -1,7 +1,8 @@
-use v5.40;
-use utf8::all;
 
 package X::DB {
+
+    use v5.40;
+    use utf8::all;
     use Moo;
     use Carp qw(croak);
     use Teng::Schema::Loader;

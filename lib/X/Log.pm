@@ -1,8 +1,8 @@
 
+package X::Log;
+
 use v5.40;
 use utf8::all;
-
-package X::Log;
 
 use Log::Log4perl;
 use File::Path qw(make_path);
