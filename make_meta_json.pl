@@ -5,16 +5,19 @@ use utf8::all;
 use Module::CPANfile;
 use CPAN::Meta;
 use JSON::PP;
+use File::Spec;
+use File::Basename;
 use Carp 'croak';
 
 try {
-
     # cpanfile を読み込む
-    my $cpanfile = Module::CPANfile->load('./cpanfile');
+    my $cpanfile_path  = File::Spec->catfile( dirname(__FILE__), "cpanfile" );
+    my $meta_json_path = File::Spec->catfile( dirname(__FILE__), "META.json" );
+    my $cpanfile       = Module::CPANfile->load($cpanfile_path);
 
     # メタデータのベースを作成
     my $meta = {
-        version        => 'v0.1.0',
+        version        => 'v0.1.1',
         abstract       => "A module for Perl one-liners",
         authors        => ['Sunadarake <sunadarake9@gmail.com>'],
         dynamic_config => 0,
@@ -52,11 +55,12 @@ try {
     my $cm = CPAN::Meta->new($meta);
 
     # META.json を出力
-    open my $fh, '>', 'META.json' or die "Cannot open META.json: $!";
+    open my $fh, '>', $meta_json_path or die "Cannot open META.json: $!";
     print $fh JSON::PP->new->pretty->encode( $cm->as_struct );
     close $fh;
 
-    say "META.json has been generated.\n";
+    say "META.json has been generated.";
+    say "file_path: $meta_json_path";
 
 }
 catch ($e) {

@@ -3,7 +3,7 @@ package X;
 use v5.40;
 use utf8::all;
 
-use version 0.77; our $VERSION = version->declare("v0.1.0");
+use version 0.77; our $VERSION = version->declare("v0.1.1");
 
 use X::File;
 use X::Selenium;
@@ -11,6 +11,7 @@ use X::Sleep;
 use X::Log;
 use X::HTML;
 use X::DB;
+use X::Time;
 use Exporter 'import';
 
 our @EXPORT = qw(

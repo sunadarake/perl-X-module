@@ -1,55 +1,16 @@
 {
-   "release_status" : "unstable",
-   "x_licenses" : [
-      "perl_5"
-   ],
-   "meta-spec" : {
-      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : 2
-   },
-   "dynamic_config" : 0,
-   "x_static_install" : 1,
-   "x_authors" : [
-      "Sunadarake <sunadarake9@gmail.com>"
-   ],
-   "license" : [
-      "unknown"
-   ],
    "author" : [
       "unknown"
    ],
-   "prereqs" : {
-      "runtime" : {
-         "requires" : {
-            "Selenium::Chrome" : "0",
-            "DBI" : "0",
-            "Log::Log4perl" : "0",
-            "Selenium::Remote::Driver" : "0",
-            "Teng" : "0",
-            "IO::Socket::SSL" : "0",
-            "DBD::SQLite" : "0",
-            "Time::HiRes" : "0",
-            "perl" : "5.040",
-            "Net::SSLeay" : "0",
-            "utf8::all" : "0",
-            "Moo" : "0"
-         }
-      },
-      "build" : {
-         "requires" : {
-            "Test::More" : "0.98"
-         }
-      }
-   },
    "resources" : {
-      "repository" : {
-         "type" : "git",
-         "url" : "git://github.com/sunadarake/perl-X-module",
+      "bugtracker" : {
          "web" : "https://github.com/sunadarake/perl-X-module"
       },
       "homepage" : "https://github.com/sunadarake/perl-X-module",
-      "bugtracker" : {
-         "web" : "https://github.com/sunadarake/perl-X-module"
+      "repository" : {
+         "type" : "git",
+         "web" : "https://github.com/sunadarake/perl-X-module",
+         "url" : "git://github.com/sunadarake/perl-X-module"
       }
    },
    "no_index" : {
@@ -64,12 +25,51 @@
          "builder"
       ]
    },
+   "x_static_install" : 1,
    "name" : "X",
-   "generated_by" : "Sunadarake, CPAN::Meta::Converter version 2.150010",
    "abstract" : "A module for Perl one-liners",
+   "license" : [
+      "unknown"
+   ],
+   "x_licenses" : [
+      "perl_5"
+   ],
+   "x_authors" : [
+      "Sunadarake <sunadarake9@gmail.com>"
+   ],
+   "version" : "v0.1.1",
+   "generated_by" : "Sunadarake, CPAN::Meta::Converter version 2.150010",
+   "meta-spec" : {
+      "version" : 2,
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
+   },
+   "dynamic_config" : 0,
+   "release_status" : "unstable",
    "x_meta_spec" : {
       "version" : 2,
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
    },
-   "version" : "v0.1.0"
+   "prereqs" : {
+      "runtime" : {
+         "requires" : {
+            "DBD::SQLite" : "0",
+            "IO::Socket::SSL" : "0",
+            "DBI" : "0",
+            "perl" : "5.040",
+            "Time::HiRes" : "0",
+            "Log::Log4perl" : "0",
+            "Selenium::Chrome" : "0",
+            "Teng" : "0",
+            "utf8::all" : "0",
+            "Selenium::Remote::Driver" : "0",
+            "Net::SSLeay" : "0",
+            "Moo" : "0"
+         }
+      },
+      "build" : {
+         "requires" : {
+            "Test::More" : "0.98"
+         }
+      }
+   }
 }
