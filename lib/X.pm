@@ -12,6 +12,7 @@ use X::Log;
 use X::HTML;
 use X::DB;
 use X::Time;
+use X::Debug;
 use Exporter 'import';
 
 our @EXPORT = qw(
@@ -46,6 +47,11 @@ our @EXPORT = qw(
   hp_get_outer_html
   hp_get_inner_html
   hp_remove_doc
+
+  dd_dump_to_file 
+  dd_json_encode 
+  dd_json_to_file 
+  dd_html_to_file
 );
 
 1;
